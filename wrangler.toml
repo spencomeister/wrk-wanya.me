@@ -7,5 +7,5 @@ SITE_NAME = "WANYA Portfolio"
 ALLOWED_ORIGINS = "https://wanya.me,https://www.wanya.me"
 
 [[routes]]
-pattern = "/api/contact*"
+pattern = "wanya.me/api/contact*"
 zone_name = "wanya.me"
