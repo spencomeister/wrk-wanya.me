@@ -54,13 +54,15 @@ const worker: ExportedHandler<Env> = {
 
     const validationError = validatePayload(payload);
     if (validationError) {
-      return buildJsonResponse(422, { success: false, error: validationError }, allowedOrigin);
+      console.warn('Contact validation failed', { reason: validationError });
+      return buildJsonResponse(422, { success: false, error: validationError, code: 'VALIDATION_ERROR' }, allowedOrigin);
     }
 
     const ip = request.headers.get('CF-Connecting-IP') ?? undefined;
     const turnstilePassed = await verifyTurnstile(payload.turnstileToken, env.TURNSTILE_SECRET, ip);
     if (!turnstilePassed) {
-      return buildJsonResponse(403, { success: false, error: 'Bot verification failed' }, allowedOrigin);
+      console.warn('Turnstile verification failed');
+      return buildJsonResponse(403, { success: false, error: 'Bot verification failed', code: 'TURNSTILE_FAILED' }, allowedOrigin);
     }
 
     try {
@@ -68,7 +70,7 @@ const worker: ExportedHandler<Env> = {
       return buildJsonResponse(200, { success: true }, allowedOrigin);
     } catch (error) {
       console.error('Resend delivery failure', error);
-      return buildJsonResponse(502, { success: false, error: 'メール送信に失敗しました。時間をおいて再度お試しください。' }, allowedOrigin);
+      return buildJsonResponse(502, { success: false, error: 'メール送信に失敗しました。時間をおいて再度お試しください。', code: 'DELIVERY_FAILED' }, allowedOrigin);
     }
   }
 };
