@@ -1,0 +1,11 @@
+name = "wrk-wanya-me"
+main = "src/index.ts"
+compatibility_date = "2024-12-05"
+
+[vars]
+SITE_NAME = "WANYA Portfolio"
+ALLOWED_ORIGINS = "https://wanya.me,https://www.wanya.me"
+
+[[routes]]
+pattern = "wanya.me/api/contact"
+custom_domain = true

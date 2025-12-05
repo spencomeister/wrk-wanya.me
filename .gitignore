@@ -1,0 +1,10 @@
+node_modules/
+wrangler-build/
+.wrangler/
+dist/
+.vscode/
+.env
+.env.*
+.dev.vars
+.DS_Store
+Thumbs.db
